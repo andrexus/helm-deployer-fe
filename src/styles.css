@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* material tweaks */
+.mat-button-wrapper {
+  text-transform: uppercase;
+}
+
+/* table */
+.table-filter-header {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+/* error messages */
+snack-bar-container.snack-success {
+  background: green;
+}
+
+snack-bar-container.snack-error {
+  background: red;
+}
+
+/* codemirror */
+.auto-height .CodeMirror {
+  height: auto;
+}
+
+.auto-height .CodeMirror-scroll {
+  max-height: 250px;
+}
+
+

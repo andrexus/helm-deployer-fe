@@ -3,6 +3,14 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+import { OfflineStore } from '../app/offline-store.enum';
+
 export const environment = {
-  production: false
+  production: false,
+  offlineDelay: 1000,
+  offline: true,
+  offlineDatabaseVersion: 4,
+  offlineStores: [
+    OfflineStore.chartValues
+  ],
 };
