@@ -4,14 +4,12 @@ import { RouterModule } from '@angular/router';
 import { ReleasesResource } from './releases.resource';
 import { ReleasesListResolver } from './releases-list/Releases-list.resolver';
 import { ReleasesListComponent } from './releases-list/releases-list.component';
-import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ReleasesDetailComponent } from './releases-detail/releases-detail.component';
 import { ReleasesDetailResolver } from './releases-detail/releases-detail.resolver';
 
 @NgModule({
   imports: [
     AppCommonModule,
-    CodemirrorModule,
     RouterModule.forChild([
       {
         path: 'releases',

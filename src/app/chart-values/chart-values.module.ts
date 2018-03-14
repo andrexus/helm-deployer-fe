@@ -3,7 +3,6 @@ import { AppCommonModule } from '../app-common/app-common.module';
 import { ChartValuesListComponent } from './chart-values-list/chart-values-list.component';
 import { ChartValuesDetailComponent } from './chart-values-detail/chart-values-detail.component';
 import { RouterModule } from '@angular/router';
-import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { ChartValuesResource } from './chart-values.resource';
 import { ChartValuesListResolver } from './chart-values-list/chart-values-list.resolver';
 import { ChartValuesDetailResolver } from './chart-values-detail/chart-values-detail.resolver';
@@ -11,7 +10,6 @@ import { ChartValuesDetailResolver } from './chart-values-detail/chart-values-de
 @NgModule({
   imports: [
     AppCommonModule,
-    CodemirrorModule,
     RouterModule.forChild([
       {
         path: 'chart-values',
