@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { AppCommonModule } from '../app-common/app-common.module';
 import { RouterModule } from '@angular/router';
 import { ReleasesResource } from './releases.resource';
-import { ReleasesListResolver } from './releases-list/Releases-list.resolver';
+import { ReleasesListResolver } from './releases-list/releases-list.resolver';
 import { ReleasesListComponent } from './releases-list/releases-list.component';
 import { ReleasesDetailComponent } from './releases-detail/releases-detail.component';
 import { ReleasesDetailResolver } from './releases-detail/releases-detail.resolver';
