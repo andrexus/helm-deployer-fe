@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseDTO } from './base.dto';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { flatMap, filter } from 'rxjs/operators';
+import {flatMap, filter, first} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
@@ -103,7 +103,8 @@ export class OfflineDatabaseService {
 
           transaction.onerror = () => observer.error(new Error('Error while reading'));
         });
-      })
+      }),
+      first()
     );
   }
 
