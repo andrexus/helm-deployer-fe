@@ -5,13 +5,15 @@ node_js:
 branches:
   only:
     - master
-    - /v\d+\.\d+\.\d+/
 
 script:
   - npm run build
 
 after_success:
   - tar czf build-prod.tar.gz dist
+
+before_deploy:
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 
 deploy:
   provider: releases
@@ -20,5 +22,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: entwico/helm-deployer-fe
-    tags: true
     all_branches: true
