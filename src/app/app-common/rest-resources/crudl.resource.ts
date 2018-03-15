@@ -75,7 +75,7 @@ export abstract class CRUDLResource<OBJECT extends BaseDTO, LIST_REQUEST, LIST_O
           };
         })
       ),
-      this.httpClient.get<BaseListResponseDTO<LIST_OBJECT>>(this.baseUrl, {
+      () => this.httpClient.get<BaseListResponseDTO<LIST_OBJECT>>(this.baseUrl, {
         headers: this.getHeaders(),
         params: params ? new HttpParams({ fromObject: params }) : null
       }),

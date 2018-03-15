@@ -30,7 +30,7 @@ export abstract class BaseResource {
       return timer(this.offlineDelay).pipe(switchMap(offline));
     }
 
-    return online;
+    return online();
   }
 
 }
