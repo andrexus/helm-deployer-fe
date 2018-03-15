@@ -10,7 +10,7 @@ script:
   - npm run build
 
 after_success:
-  - tar czf build-prod.tar.gz dist
+  - tar czf dist.tar.gz dist
 
 before_deploy:
   - git tag "$(date +'%Y-%m-%d-%H-%M-%S')@$(git log --format=%h -1)"
@@ -18,7 +18,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  file: build-prod.tar.gz
+  file: dist.tar.gz
   skip_cleanup: true
   on:
     repo: entwico/helm-deployer-fe
