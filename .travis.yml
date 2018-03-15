@@ -19,5 +19,6 @@ deploy:
   file: build-prod.tar.gz
   skip_cleanup: true
   on:
+    repo: entwico/helm-deployer-fe
     tags: true
     all_branches: true
