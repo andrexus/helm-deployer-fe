@@ -4,4 +4,12 @@ export interface ChartValueDTO extends BaseDTO {
   chartName: string;
   name: string;
   data: string;
+  version: string;
+}
+
+export class ChartValueDtoClass implements ChartValueDTO {
+  chartName: string;
+  name: string;
+  data: string;
+  version: string;
 }

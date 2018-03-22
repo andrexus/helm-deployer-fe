@@ -7,31 +7,88 @@
     <mat-form-field>
       <input matInput placeholder="Name" formControlName="name" required>
       <mat-error *ngIf="form.get('name').hasError('required')">required</mat-error>
-      <mat-hint>A Webhook name in Helm repository</mat-hint>
+      <mat-hint>Webhook name in Helm repository</mat-hint>
     </mat-form-field>
 
     <mat-form-field>
       <input matInput placeholder="Description" formControlName="description" required>
+      <mat-error *ngIf="form.get('description').hasError('required')">required</mat-error>
+      <mat-hint>Webhook description</mat-hint>
     </mat-form-field>
 
+    <mat-card [formGroup]="form.get('condition')">
+      <mat-card-title-group>Condition</mat-card-title-group>
 
-    <mat-form-field>
-      <mat-codemirror formControlName="condition"
-                      class="auto-height"
-                      required
-                      (focusChange)="lineNumbers = $event"
-                      [options]="{ lineNumbers: lineNumbers, theme: 'neat', mode: 'yaml' }"
-                      placeholder="Conditions"></mat-codemirror>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Webhook Type">
+          <mat-option *ngFor="let wbType of webhookTypes" [value]="wbType">
+            {{ wbType }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-codemirror formControlName="deployConfig"
-                      class="auto-height"
-                      required
-                      (focusChange)="lineNumbers = $event"
-                      [options]="{ lineNumbers: lineNumbers, theme: 'neat', mode: 'yaml' }"
-                      placeholder="Deploy config"></mat-codemirror>
-    </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Project Namespace" formControlName="projectNamespace" required>
+        <mat-error *ngIf="form.get('condition.projectNamespace').hasError('required')">required</mat-error>
+        <mat-hint>Namespance of a project</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Project Name" formControlName="projectName" required>
+        <mat-error *ngIf="form.get('condition.projectName').hasError('required')">required</mat-error>
+        <mat-hint>Project name</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Git Reference" formControlName="gitRef" required>
+        <mat-error *ngIf="form.get('condition.gitRef').hasError('required')">required</mat-error>
+        <mat-hint>A Git Branch</mat-hint>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="isTag">Is Tag</mat-checkbox>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title-group>Deployment Config</mat-card-title-group>
+
+      <mat-form-field [formGroup]="form.get('deployConfig.release')">
+        <mat-select placeholder="Release" formControlName="name">
+          <mat-option *ngFor="let rls of releases" [value]="rls.name">
+            {{ rls.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('deployConfig.chartValue.name').hasError('required')">required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field [formGroup]="form.get('deployConfig.chartValue')">
+        <mat-select placeholder="Chart Name"
+                    formControlName="chartName">
+          <mat-option *ngFor="let cName of chartNames" [value]="cName">
+            {{ cName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('deployConfig.chartValue.chartName').hasError('required')">required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field [formGroup]="form.get('deployConfig.chartValue')">
+        <mat-select placeholder="Version" formControlName="version">
+          <mat-option *ngFor="let version of chartVersions" [value]="version">
+            {{ version }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('deployConfig.chartValue.version').hasError('required')">required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field [formGroup]="form.get('deployConfig.chartValue')">
+        <mat-select placeholder="Chart Value" formControlName="name">
+          <mat-option *ngFor="let chartVal of chartValues" [value]="chartVal.name" >
+            {{ chartVal.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </mat-card>
+
   </mat-card-content>
 
   <mat-card-actions>

@@ -4,8 +4,8 @@ import { ChartValuesListComponent } from './chart-values-list/chart-values-list.
 import { ChartValuesDetailComponent } from './chart-values-detail/chart-values-detail.component';
 import { RouterModule } from '@angular/router';
 import { ChartValuesResource } from './chart-values.resource';
-import { ChartValuesListResolver } from './chart-values-list/chart-values-list.resolver';
-import { ChartValuesDetailResolver } from './chart-values-detail/chart-values-detail.resolver';
+import { ChartValuesListResolver } from '../app-common/resolvers/chart-values-list.resolver';
+import { ChartValuesDetailResolver } from '../app-common/resolvers/chart-values-detail.resolver';
 
 @NgModule({
   imports: [

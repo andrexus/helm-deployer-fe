@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { WebHookDTO } from '../web-hook.dto';
+import { WebHookDTO } from '../../web-hooks/web-hooks/web-hook.dto';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { WebHooksResource } from '../web-hooks.resource';
+import { WebHooksResource } from '../../web-hooks/web-hooks/web-hooks.resource';
 import { map, take } from 'rxjs/operators';
+
 
 @Injectable()
 export class WebHooksListResolver implements Resolve<WebHookDTO[]> {

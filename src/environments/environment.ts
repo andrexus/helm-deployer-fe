@@ -9,7 +9,7 @@ export const environment = {
   production: false,
   offlineDelay: 1000,
   offline: true,
-  offlineDatabaseVersion: 7,
+  offlineDatabaseVersion: 11,
   offlineStores: [
     OfflineStore.chartValues,
     OfflineStore.releaseValues,

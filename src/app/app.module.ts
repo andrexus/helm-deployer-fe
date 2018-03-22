@@ -12,7 +12,7 @@ import { WebHooksModule } from './web-hooks/web-hooks/web-hooks.module';
 
 
 const appRoutes: Routes = [
-  {path: '', redirectTo: '/chart-values', pathMatch: 'full'},
+  {path: '', redirectTo: '/web-hooks', pathMatch: 'full'},
 ];
 
 @NgModule({

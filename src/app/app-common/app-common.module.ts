@@ -12,7 +12,10 @@ import {
   MatSnackBarModule,
   MatSortModule,
   MatTableModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatCheckboxModule,
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -38,6 +41,9 @@ const ProxyModules = [
   MatSortModule,
   MatPaginatorModule,
   MatDialogModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatCheckboxModule,
 
   RestResourcesModule,
 ];
@@ -60,7 +66,7 @@ const ProxyModules = [
   ],
   declarations: [
     MatCodemirrorComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
   ],
 })
 export class AppCommonModule {

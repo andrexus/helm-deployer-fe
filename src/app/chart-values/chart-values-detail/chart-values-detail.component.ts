@@ -57,6 +57,7 @@ export class ChartValuesDetailComponent implements OnInit {
       name: new FormControl(dto.name || '', [
         Validators.required,
       ]),
+      version: new FormControl(dto.version || ''),
       data: new FormControl(dto.data || '', [
         Validators.required,
       ]),
