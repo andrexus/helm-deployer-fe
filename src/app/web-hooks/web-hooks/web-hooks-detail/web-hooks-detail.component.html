@@ -20,11 +20,7 @@
       <mat-card-title-group>Condition</mat-card-title-group>
 
       <mat-form-field>
-        <mat-select placeholder="Webhook Type">
-          <mat-option *ngFor="let wbType of webhookTypes" [value]="wbType">
-            {{ wbType }}
-          </mat-option>
-        </mat-select>
+        <input matInput placeholder="Webhook type" formControlName="webhookType">
       </mat-form-field>
 
       <mat-form-field>

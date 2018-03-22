@@ -21,8 +21,6 @@ import { of } from 'rxjs/observable/of';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WebHooksDetailComponent implements OnInit {
-
-  webhookTypes = ['pipeline'];
   form: FormGroup;
 
   chartValues: ChartValueDTO[];
@@ -30,9 +28,6 @@ export class WebHooksDetailComponent implements OnInit {
 
   chartNames: string[];
   chartVersions: string[];
-  selectedChartName: string;
-  selectedChartValue: string;
-  selectedChartVersion: string;
 
   chartNameControl: FormControl;
   versionControl: FormControl;
@@ -105,10 +100,6 @@ export class WebHooksDetailComponent implements OnInit {
       dto.deployConfig = new WebHookDeployConfig();
     }
 
-    this.selectedChartName = dto.deployConfig.chartValue.chartName;
-    this.selectedChartVersion = dto.deployConfig.chartValue.version;
-    this.selectedChartValue = dto.deployConfig.chartValue.name;
-
     return new FormGroup({
       id: new FormControl(dto.id),
       name: new FormControl(dto.name || '', [
@@ -118,6 +109,10 @@ export class WebHooksDetailComponent implements OnInit {
         Validators.required,
       ]),
       condition: new FormGroup({
+        webhookType: new FormControl({
+          value: 'Pipeline',
+          disabled: true,
+        }),
         projectNamespace: new FormControl(dto.condition.projectNamespace || '', [
           Validators.required,
         ]),
@@ -141,13 +136,11 @@ export class WebHooksDetailComponent implements OnInit {
           ]),
           version: this.versionControl = new FormControl({
             value: dto.deployConfig.chartValue.version || '',
-            disabled: this.selectedChartName === '',
           }, [
             Validators.required,
           ]),
           name: this.chartValueControl = new FormControl({
             value: dto.deployConfig.chartValue.name || '',
-            disabled: this.selectedChartVersion === '',
           }, []),
         }),
       }),
