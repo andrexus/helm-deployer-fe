@@ -16,10 +16,10 @@ import {
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatCodemirrorComponent } from './mat-codemirror/mat-codemirror.component';
 import { RestResourcesModule } from './rest-resources/rest-resources.module';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { CommunicationService } from './communication.service';
+import { MatCodemirrorModule } from 'ngx-mat-codemirror';
 
 const ProxyModules = [
   CommonModule,
@@ -38,6 +38,7 @@ const ProxyModules = [
   MatSortModule,
   MatPaginatorModule,
   MatDialogModule,
+  MatCodemirrorModule,
 
   RestResourcesModule,
 ];
@@ -49,7 +50,6 @@ const ProxyModules = [
   exports: [
     ProxyModules,
 
-    MatCodemirrorComponent,
     ConfirmationDialogComponent,
   ],
   entryComponents: [
@@ -59,7 +59,6 @@ const ProxyModules = [
     CommunicationService,
   ],
   declarations: [
-    MatCodemirrorComponent,
     ConfirmationDialogComponent
   ],
 })

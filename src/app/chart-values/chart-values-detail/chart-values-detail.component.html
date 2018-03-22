@@ -14,12 +14,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-codemirror formControlName="data"
-                      class="auto-height"
-                      required
-                      (focusChange)="lineNumbers = $event"
-                      [options]="{ lineNumbers: lineNumbers, theme: 'neat', mode: 'yaml' }"
-                      placeholder="The values (YAML)"></mat-codemirror>
+      <mat-codemirror formControlName="data" required [options]="{ theme: 'neat', mode: 'yaml' }" placeholder="The values (YAML)"></mat-codemirror>
     </mat-form-field>
   </mat-card-content>
 

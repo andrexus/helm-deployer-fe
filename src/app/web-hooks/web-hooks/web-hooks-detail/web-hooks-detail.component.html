@@ -17,19 +17,15 @@
 
     <mat-form-field>
       <mat-codemirror formControlName="condition"
-                      class="auto-height"
                       required
-                      (focusChange)="lineNumbers = $event"
-                      [options]="{ lineNumbers: lineNumbers, theme: 'neat', mode: 'yaml' }"
+                      [options]="{ theme: 'neat', mode: 'yaml' }"
                       placeholder="Conditions"></mat-codemirror>
     </mat-form-field>
 
     <mat-form-field>
       <mat-codemirror formControlName="deployConfig"
-                      class="auto-height"
                       required
-                      (focusChange)="lineNumbers = $event"
-                      [options]="{ lineNumbers: lineNumbers, theme: 'neat', mode: 'yaml' }"
+                      [options]="{ theme: 'neat', mode: 'yaml' }"
                       placeholder="Deploy config"></mat-codemirror>
     </mat-form-field>
   </mat-card-content>
