@@ -25,7 +25,7 @@ export class ChartValuesDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form = this.createForm(this.route.snapshot.data['data'] || {});
+    this.form = this.createForm(this.route.snapshot.data['data'] || []);
   }
 
   save() {
@@ -57,6 +57,7 @@ export class ChartValuesDetailComponent implements OnInit {
       name: new FormControl(dto.name || '', [
         Validators.required,
       ]),
+      version: new FormControl(dto.version || ''),
       data: new FormControl(dto.data || '', [
         Validators.required,
       ]),

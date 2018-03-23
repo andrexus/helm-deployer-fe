@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
+import { WebHooksResource } from '../../web-hooks/web-hooks/web-hooks.resource';
+import { WebHookDTO } from '../../web-hooks/web-hooks/web-hook.dto';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { ChartValueDTO } from '../chart-value.dto';
-import { ChartValuesResource } from '../chart-values.resource';
 import { take } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 @Injectable()
-export class ChartValuesDetailResolver implements Resolve<ChartValueDTO[]> {
+export class WebHooksDetailResolver implements Resolve<WebHookDTO[]> {
 
-  constructor(private resource: ChartValuesResource) { }
+  constructor(private resource: WebHooksResource) {
+  }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const { id } = route.params;
@@ -21,5 +22,4 @@ export class ChartValuesDetailResolver implements Resolve<ChartValueDTO[]> {
 
     return of(null);
   }
-
 }

@@ -6,3 +6,9 @@ export interface ReleaseDTO extends BaseDTO {
   version: string;
   delpoyed: ISODate;
 }
+
+export class ReleaseDTOClass implements ReleaseDTO {
+  name: string;
+  version: string;
+  delpoyed: ISODate;
+}
