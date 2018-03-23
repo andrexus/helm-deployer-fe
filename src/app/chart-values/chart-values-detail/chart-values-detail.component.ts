@@ -25,7 +25,7 @@ export class ChartValuesDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form = this.createForm(this.route.snapshot.data['data'] || {});
+    this.form = this.createForm(this.route.snapshot.data['data'] || []);
   }
 
   save() {

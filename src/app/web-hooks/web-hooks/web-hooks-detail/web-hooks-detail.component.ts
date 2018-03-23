@@ -41,9 +41,9 @@ export class WebHooksDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form = this.createForm(this.route.snapshot.data['webHookData'] || {});
-    this.releases = this.route.snapshot.data['releaseData'] || {};
-    this.chartValues = this.route.snapshot.data['chartValueData'] || {};
+    this.form = this.createForm(this.route.snapshot.data['webHookData']);
+    this.releases = this.route.snapshot.data['releaseData'];
+    this.chartValues = this.route.snapshot.data['chartValueData'];
     this.chartNames = this.chartValues
       .map(chart => chart.chartName)
       .filter((value, index, self) => self.indexOf(value) === index);
@@ -80,25 +80,20 @@ export class WebHooksDetailComponent implements OnInit {
   private refreshChartVersions() {
     this.chartVersions = this.route.snapshot.data['chartValueData']
       .filter(chart => chart.chartName === this.chartNameControl.value || !this.chartNameControl.value)
-      .map(chart => chart.version) || {};
+      .map(chart => chart.version);
   }
 
   private refreshChartValues() {
     this.chartValues = this.route.snapshot.data['chartValueData']
       .filter((chart) => chart.chartName === this.chartNameControl.value || !this.chartNameControl.value
-        && chart.version === this.versionControl.value || !this.versionControl.value) || {};
+        && chart.version === this.versionControl.value || !this.versionControl.value);
   }
 
 
   private createForm(dto: WebHookDTO) {
 
-    if (!dto.condition) {
-      dto.condition = new WebHookCondition();
-    }
-
-    if (!dto.deployConfig) {
-      dto.deployConfig = new WebHookDeployConfig();
-    }
+    dto.condition = dto.condition || new WebHookCondition();
+    dto.deployConfig = dto.deployConfig || new WebHookDeployConfig();
 
     return new FormGroup({
       id: new FormControl(dto.id),

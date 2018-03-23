@@ -17,14 +17,3 @@ snack-bar-container.snack-success {
 snack-bar-container.snack-error {
   background: red;
 }
-
-/* codemirror */
-.auto-height .CodeMirror {
-  height: auto;
-}
-
-.auto-height .CodeMirror-scroll {
-  max-height: 250px;
-}
-
-

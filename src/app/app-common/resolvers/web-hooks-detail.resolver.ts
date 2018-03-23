@@ -4,7 +4,6 @@ import { WebHookDTO } from '../../web-hooks/web-hooks/web-hook.dto';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
-import { ChartValuesResource } from '../../chart-values/chart-values.resource';
 
 @Injectable()
 export class WebHooksDetailResolver implements Resolve<WebHookDTO[]> {
