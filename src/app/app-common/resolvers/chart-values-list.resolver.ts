@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { ChartValueDTO } from '../../chart-values/chart-value.dto';
-import { ChartValuesResource } from '../../chart-values/chart-values.resource';
+import { ChartValuesDTO } from '../dto/chart-values.dto';
+import { ChartValuesResource } from '../resources/chart-values.resource';
 import { map, take } from 'rxjs/operators';
 
 @Injectable()
-export class ChartValuesListResolver implements Resolve<ChartValueDTO[]> {
+export class ChartValuesListResolver implements Resolve<ChartValuesDTO[]> {
 
   constructor(private resource: ChartValuesResource) {
   }

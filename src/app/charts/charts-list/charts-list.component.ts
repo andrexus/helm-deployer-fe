@@ -1,35 +1,36 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { ReleaseDTO } from '../../app-common/dto/release.dto';
-import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { filter, finalize, switchMap, tap } from 'rxjs/operators';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../app-common/confirmation-dialog/confirmation-dialog.component';
-import { ActivatedRoute } from '@angular/router';
-import { CommunicationService } from '../../app-common/communication.service';
-import { ReleasesResource } from '../../app-common/resources/releases.resource';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { environment } from '../../../environments/environment';
+import { CommunicationService } from '../../app-common/communication.service';
+import { ActivatedRoute } from '@angular/router';
+import { ChartsResource } from '../../app-common/resources/charts.resource';
+import { ChartDTO } from '../../app-common/dto/chart.dto';
 
 @Component({
-  selector: 'app-releases-list',
-  templateUrl: './releases-list.component.html',
-  styleUrls: ['./releases-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-charts-list',
+  templateUrl: './charts-list.component.html',
+  styleUrls: ['./charts-list.component.css']
 })
-export class ReleasesListComponent implements OnInit, AfterViewInit {
+export class ChartsListComponent implements OnInit, AfterViewInit {
 
-  dataSource: MatTableDataSource<ReleaseDTO>;
+  dataSource: MatTableDataSource<ChartDTO>;
 
   @ViewChild(MatSort) sort: MatSort;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private resource: ReleasesResource,
-              private route: ActivatedRoute,
-              private dialog: MatDialog,
-              private communicator: CommunicationService, ) {
-  }
+  constructor(
+    private resource: ChartsResource,
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private communicator: CommunicationService,
+  ) { }
+
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource<ReleaseDTO>(this.route.snapshot.data['releases']);
+    this.dataSource = new MatTableDataSource<ChartDTO>(this.route.snapshot.data['charts']);
   }
 
   ngAfterViewInit() {
@@ -41,7 +42,6 @@ export class ReleasesListComponent implements OnInit, AfterViewInit {
     const always = [
       'name',
       'version',
-      'deployed',
     ];
 
     if (!environment.offline) {

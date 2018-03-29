@@ -4,22 +4,19 @@
 
   <mat-card-content fxLayout="column" fxLayoutGap="20px">
     <mat-form-field>
-      <input matInput placeholder="Chart name" formControlName="chartName" required>
+      <mat-select placeholder="Chart name" formControlName="chartName" required>
+        <mat-option *ngFor="let chart of chartNames" [value]="chart">{{ chart }}</mat-option>
+      </mat-select>
       <mat-error *ngIf="form.get('chartName').hasError('required')">required</mat-error>
       <mat-hint>A chart name in Helm repository</mat-hint>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Version" formControlName="version">
-      <mat-hint>A chart version in Helm repository</mat-hint>
+      <input matInput placeholder="Values set name" formControlName="name" required>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Value name" formControlName="name" required>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-codemirror formControlName="data" required [options]="{ theme: 'neat', mode: 'yaml' }" placeholder="The values (YAML)"></mat-codemirror>
+      <mat-codemirror formControlName="data" required [options]="{ theme: 'neat', mode: 'yaml' }" placeholder="Values (YAML)"></mat-codemirror>
     </mat-form-field>
   </mat-card-content>
 

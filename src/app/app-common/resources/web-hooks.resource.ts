@@ -1,5 +1,5 @@
-import { CRUDLResource } from '../../app-common/rest-resources/crudl.resource';
-import { WebHookDTO } from './web-hook.dto';
+import { CRUDLResource } from '../rest-resources/crudl.resource';
+import { WebHookDTO } from '../dto/web-hook.dto';
 import { OfflineStore } from '../../offline-store.enum';
 
 export class WebHooksResource extends CRUDLResource<WebHookDTO, void, WebHookDTO> {

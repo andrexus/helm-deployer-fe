@@ -1,6 +1,6 @@
-import { CRUDLResource } from '../app-common/rest-resources/crudl.resource';
-import { ReleaseDTO } from './releases.dto';
-import { OfflineStore } from '../offline-store.enum';
+import { CRUDLResource } from '../rest-resources/crudl.resource';
+import { ReleaseDTO } from '../dto/release.dto';
+import { OfflineStore } from '../../offline-store.enum';
 
 export class ReleasesResource extends CRUDLResource<ReleaseDTO, void, ReleaseDTO> {
 

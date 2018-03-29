@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { WebHookDTO } from '../dto/web-hook.dto';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { WebHooksResource } from '../resources/web-hooks.resource';
 import { map, take } from 'rxjs/operators';
-
+import { ChartDTO } from '../dto/chart.dto';
+import { ChartsResource } from '../resources/charts.resource';
 
 @Injectable()
-export class WebHooksListResolver implements Resolve<WebHookDTO[]> {
+export class ChartsResolver implements Resolve<ChartDTO[]> {
 
-  constructor(private resource: WebHooksResource) {
+  constructor(private resource: ChartsResource) {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

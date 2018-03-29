@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { ChartValuesResource } from '../chart-values.resource';
+import { ChartValuesResource } from '../../app-common/resources/chart-values.resource';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { ChartValueDTO } from '../chart-value.dto';
+import { ChartValuesDTO } from '../../app-common/dto/chart-values.dto';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../app-common/confirmation-dialog/confirmation-dialog.component';
 import { filter, finalize, switchMap, tap } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { CommunicationService } from '../../app-common/communication.service';
 })
 export class ChartValuesListComponent implements OnInit, AfterViewInit {
 
-  dataSource: MatTableDataSource<ChartValueDTO>;
+  dataSource: MatTableDataSource<ChartValuesDTO>;
 
   columnsToDisplay = [
     'chartName',
@@ -37,7 +37,7 @@ export class ChartValuesListComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.route.snapshot.data['data']);
+    this.dataSource = new MatTableDataSource(this.route.snapshot.data['chartValues']);
   }
 
   ngAfterViewInit() {

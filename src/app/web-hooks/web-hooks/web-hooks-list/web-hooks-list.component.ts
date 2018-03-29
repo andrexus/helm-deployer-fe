@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { WebHookDTO } from '../web-hook.dto';
-import { WebHooksResource } from '../web-hooks.resource';
+import { WebHookDTO } from '../../../app-common/dto/web-hook.dto';
+import { WebHooksResource } from '../../../app-common/resources/web-hooks.resource';
 import { ActivatedRoute } from '@angular/router';
 import { CommunicationService } from '../../../app-common/communication.service';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../app-common/confirmation-dialog/confirmation-dialog.component';
@@ -36,7 +36,7 @@ export class WebHooksListComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.route.snapshot.data['data']);
+    this.dataSource = new MatTableDataSource(this.route.snapshot.data['hooks']);
   }
 
   ngAfterViewInit() {

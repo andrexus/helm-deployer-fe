@@ -9,8 +9,9 @@ export const environment = {
   production: false,
   offlineDelay: 1000,
   offline: true,
-  offlineDatabaseVersion: 11,
+  offlineDatabaseVersion: 12,
   offlineStores: [
+    OfflineStore.charts,
     OfflineStore.chartValues,
     OfflineStore.releaseValues,
     OfflineStore.webHookValues,

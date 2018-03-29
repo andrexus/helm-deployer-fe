@@ -1,18 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommunicationService } from '../../../app-common/communication.service';
-import { finalize, map, take } from 'rxjs/operators';
-import { WebHookDTO } from '../web-hook.dto';
-import { WebHooksResource } from '../web-hooks.resource';
-import { WebHookCondition } from '../web-hook-condition';
-import { WebHookDeployConfig } from '../web-hook-deploy-config';
-import { ReleaseDTO } from '../../../releases/releases.dto';
-import { ChartValueDTO } from '../../../chart-values/chart-value.dto';
-import { ChartValuesResource } from '../../../chart-values/chart-values.resource';
+import { finalize, map, startWith } from 'rxjs/operators';
+import { WebHookDTO } from '../../../app-common/dto/web-hook.dto';
+import { WebHooksResource } from '../../../app-common/resources/web-hooks.resource';
+import { ReleaseDTO } from '../../../app-common/dto/release.dto';
+import { ChartDTO } from '../../../app-common/dto/chart.dto';
+import { ChartValuesDTO } from '../../../app-common/dto/chart-values.dto';
+import { untilDestroyed } from 'ngx-rx-collector';
 import { Observable } from 'rxjs/Observable';
-import { merge } from 'rxjs/observable/merge';
-import { of } from 'rxjs/observable/of';
 
 @Component({
   selector: 'app-web-hooks-detail',
@@ -20,42 +17,74 @@ import { of } from 'rxjs/observable/of';
   styleUrls: ['./web-hooks-detail.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WebHooksDetailComponent implements OnInit {
+export class WebHooksDetailComponent implements OnInit, OnDestroy {
+
   form: FormGroup;
 
-  chartValues: ChartValueDTO[];
-  releases: ReleaseDTO[];
+  gitProjects: Observable<string[]>;
 
-  chartNames: string[];
-  chartVersions: string[];
+  gitRepositories: Observable<string[]>;
 
-  chartNameControl: FormControl;
+  gitBranches = [
+    'master',
+    'develop',
+  ];
+
+  gitProjectControl: FormControl;
+  gitRepositoryControl: FormControl;
+
+  releaseControl: FormControl;
   versionControl: FormControl;
+  chartNameControl: FormControl;
   chartValueControl: FormControl;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private resource: WebHooksResource,
-              private chartValuesResource: ChartValuesResource,
-              private communicator: CommunicationService,) {
+              private communicator: CommunicationService) {
   }
 
   ngOnInit() {
-    this.form = this.createForm(this.route.snapshot.data['webHookData']);
-    this.releases = this.route.snapshot.data['releaseData'];
-    this.chartValues = this.route.snapshot.data['chartValueData'];
-    this.chartNames = this.chartValues
-      .map(chart => chart.chartName)
-      .filter((value, index, self) => self.indexOf(value) === index);
+    this.form = this.createForm(this.route.snapshot.data['hook'] || {});
 
-    merge(this.chartNameControl.valueChanges,
-      this.versionControl.valueChanges,
-      this.chartValueControl.valueChanges, of(null))
-      .subscribe(() => {
-        this.refreshChartVersions();
-        this.refreshChartValues();
-      });
+    this.gitProjects = this.gitProjectControl.valueChanges
+      .pipe(
+        startWith(''),
+        untilDestroyed(this),
+        map(val => {
+          const all: WebHookDTO[] = this.route.snapshot.data['hooks'];
+          const names = all.map(h => h.condition.projectNamespace);
+
+          return names.filter((n, i) => n.startsWith(val) && names.indexOf(n) === i).sort();
+        })
+      );
+
+    this.gitRepositories = this.gitRepositoryControl.valueChanges
+      .pipe(
+        startWith(''),
+        untilDestroyed(this),
+        map(val => {
+          const all: WebHookDTO[] = this.route.snapshot.data['hooks'];
+          const names = all.map(h => h.condition.projectName);
+
+          return names.filter((n, i) => n.startsWith(val) && names.indexOf(n) === i).sort();
+        })
+      );
+
+    this.releaseControl.valueChanges.pipe(untilDestroyed(this)).subscribe(val => {
+      const release: ReleaseDTO = this.route.snapshot.data['releases'].find(r => r.name === val);
+
+      this.chartNameControl.setValue(release ? release.chart.metadata.name : '');
+      this.versionControl.setValue(release ? release.chart.metadata.version : '');
+    });
+
+    this.chartNameControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
+      this.versionControl.setValue('');
+      this.chartValueControl.setValue('');
+    });
   }
+
+  ngOnDestroy() {}
 
   save() {
     this.communicator.isLoading = true;
@@ -77,67 +106,53 @@ export class WebHooksDetailComponent implements OnInit {
     return !!this.form.value.id;
   }
 
-  private refreshChartVersions() {
-    this.chartVersions = this.route.snapshot.data['chartValueData']
-      .filter(chart => chart.chartName === this.chartNameControl.value || !this.chartNameControl.value)
-      .map(chart => chart.version);
+  get releases() {
+    const all: ReleaseDTO[] = this.route.snapshot.data['releases'];
+
+    return all.map(r => r.name).sort();
   }
 
-  private refreshChartValues() {
-    this.chartValues = this.route.snapshot.data['chartValueData']
-      .filter((chart) => chart.chartName === this.chartNameControl.value || !this.chartNameControl.value
-        && chart.version === this.versionControl.value || !this.versionControl.value);
+  get chartNames() {
+    const charts: ChartDTO[] = this.route.snapshot.data['charts'];
+    const release: ReleaseDTO = this.route.snapshot.data['releases'].find(r => r.name === this.releaseControl.value);
+    const names = charts.map(c => c.name).filter(name => release && name === release.chart.metadata.name);
+
+    return names.filter((n, i) => names.indexOf(n) === i).sort();
+  }
+
+  get chartVersions() {
+    const charts: ChartDTO[] = this.route.snapshot.data['charts'];
+
+    return charts.filter(c => c.name === this.chartNameControl.value).map(r => r.version).sort();
+  }
+
+  get chartValues() {
+    const all: ChartValuesDTO[] = this.route.snapshot.data['chartValues'];
+
+    return all.filter(cv => cv.chartName === this.chartNameControl.value);
   }
 
 
   private createForm(dto: WebHookDTO) {
-
-    dto.condition = dto.condition || new WebHookCondition();
-    dto.deployConfig = dto.deployConfig || new WebHookDeployConfig();
+    dto.condition = dto.condition || <any>{};
+    dto.deployConfig = dto.deployConfig || <any>{};
 
     return new FormGroup({
       id: new FormControl(dto.id),
-      name: new FormControl(dto.name || '', [
-        Validators.required,
-      ]),
-      description: new FormControl(dto.description || '', [
-        Validators.required,
-      ]),
+      name: new FormControl(dto.name || '', Validators.required),
+      description: new FormControl(dto.description || ''),
       condition: new FormGroup({
-        webhookType: new FormControl({
-          value: 'Pipeline',
-          disabled: true,
-        }),
-        projectNamespace: new FormControl(dto.condition.projectNamespace || '', [
-          Validators.required,
-        ]),
-        projectName: new FormControl(dto.condition.projectName || '', [
-          Validators.required,
-        ]),
-        gitRef: new FormControl(dto.condition.gitRef || '', [
-          Validators.required,
-        ]),
-        isTag: new FormControl(dto.condition.isTag || ''),
+        webhookType: new FormControl('pipeline'),
+        projectNamespace: this.gitProjectControl = new FormControl(dto.condition.projectNamespace || '', Validators.required),
+        projectName: this.gitRepositoryControl = new FormControl(dto.condition.projectName || '', Validators.required),
+        gitRef: new FormControl(dto.condition.gitRef || '', Validators.required),
+        isTag: new FormControl(dto.condition.isTag || true),
       }),
       deployConfig: new FormGroup({
-        release: new FormGroup({
-          name: new FormControl(dto.deployConfig.release.name || '', [
-            Validators.required,
-          ]),
-        }),
-        chartValue: new FormGroup({
-          chartName: this.chartNameControl = new FormControl(dto.deployConfig.chartValue.chartName || '', [
-            Validators.required,
-          ]),
-          version: this.versionControl = new FormControl({
-            value: dto.deployConfig.chartValue.version || '',
-          }, [
-            Validators.required,
-          ]),
-          name: this.chartValueControl = new FormControl({
-            value: dto.deployConfig.chartValue.name || '',
-          }, []),
-        }),
+        releaseName: this.releaseControl = new FormControl(dto.deployConfig.releaseName || '', Validators.required),
+        chartName: this.chartNameControl = new FormControl(dto.deployConfig.chartName || '', Validators.required),
+        chartVersion: this.versionControl = new FormControl(dto.deployConfig.chartVersion || '', Validators.required),
+        chartValuesId: this.chartValueControl = new FormControl(dto.deployConfig.chartValuesId || ''),
       }),
     });
   }

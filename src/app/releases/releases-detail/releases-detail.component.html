@@ -1,22 +1,43 @@
 <mat-card [formGroup]="form">
-  <mat-card-title *ngIf="!isEdit">Create a release value</mat-card-title>
-  <mat-card-title *ngIf="isEdit">Edit release value</mat-card-title>
+  <mat-card-title *ngIf="!isEdit">Create a release</mat-card-title>
+  <mat-card-title *ngIf="isEdit">Edit release</mat-card-title>
 
   <mat-card-content fxLayout="column" fxLayoutGap="20px">
     <mat-form-field>
       <input matInput placeholder="Release name" formControlName="name" required>
       <mat-error *ngIf="form.get('name').hasError('required')">required</mat-error>
-      <mat-hint>A release name in Helm repository</mat-hint>
+      <mat-hint>A release name</mat-hint>
     </mat-form-field>
 
     <mat-form-field>
       <input matInput placeholder="Version" formControlName="version" required>
+      <mat-error *ngIf="form.get('version').hasError('required')">required</mat-error>
+      <mat-hint>A release version</mat-hint>
     </mat-form-field>
 
-    <mat-form-field>
-      <input matInput placeholder="Deployed" formControlName="deployed" required>
-    </mat-form-field>
+    <mat-divider [inset]="true"></mat-divider>
 
+    <div [formGroup]="form.get('chart.metadata')">
+      <mat-card-subtitle>Generated with chart</mat-card-subtitle>
+
+      <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+        <mat-form-field>
+          <mat-select placeholder="Chart name" formControlName="name" required>
+            <mat-option *ngFor="let chart of chartNames" [value]="chart">{{ chart }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('chart.metadata.name').hasError('required')">required</mat-error>
+          <mat-hint>A chart name</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Chart version" formControlName="version" required>
+            <mat-option *ngFor="let version of chartVersions" [value]="version">{{ version }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('chart.metadata.version').hasError('required')">required</mat-error>
+          <mat-hint>A chart version</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
   </mat-card-content>
 
   <mat-card-actions>

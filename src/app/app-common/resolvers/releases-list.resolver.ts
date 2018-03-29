@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { ReleaseDTO } from '../../releases/releases.dto';
-import { ReleasesResource } from '../../releases/releases.resource';
+import { ReleaseDTO } from '../dto/release.dto';
+import { ReleasesResource } from '../resources/releases.resource';
 import { map, take } from 'rxjs/operators';
 
 

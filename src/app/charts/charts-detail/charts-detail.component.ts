@@ -1,36 +1,28 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ChartValuesDTO } from '../../app-common/dto/chart-values.dto';
-import { ChartValuesResource } from '../../app-common/resources/chart-values.resource';
 import { CommunicationService } from '../../app-common/communication.service';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ChartsResource } from '../../app-common/resources/charts.resource';
 import { ChartDTO } from '../../app-common/dto/chart.dto';
 
 @Component({
-  selector: 'app-chart-values-detail',
-  templateUrl: './chart-values-detail.component.html',
-  styleUrls: ['./chart-values-detail.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-charts-detail',
+  templateUrl: './charts-detail.component.html',
+  styleUrls: ['./charts-detail.component.css']
 })
-export class ChartValuesDetailComponent implements OnInit {
+export class ChartsDetailComponent implements OnInit {
 
   form: FormGroup;
 
-  chartNames: string[];
-
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private resource: ChartValuesResource,
+              private resource: ChartsResource,
               private communicator: CommunicationService,) {
   }
 
   ngOnInit() {
-    this.form = this.createForm(this.route.snapshot.data['chartValue'] || {});
-
-    const names = (<ChartDTO[]>this.route.snapshot.data['charts']).map(c => c.name);
-
-    this.chartNames = names.filter((n, i) => names.indexOf(n) === i);
+    this.form = this.createForm(this.route.snapshot.data['chart'] || {});
   }
 
   save() {
@@ -53,19 +45,17 @@ export class ChartValuesDetailComponent implements OnInit {
     return !!this.form.value.id;
   }
 
-  private createForm(dto: ChartValuesDTO) {
+  private createForm(dto: ChartDTO) {
     return new FormGroup({
       id: new FormControl(dto.id),
-      chartName: new FormControl(dto.chartName || '', [
-        Validators.required,
-      ]),
       name: new FormControl(dto.name || '', [
         Validators.required,
       ]),
-      data: new FormControl(dto.data || '', [
+      version: new FormControl(dto.version || '', [
         Validators.required,
       ]),
     });
   }
+
 
 }

@@ -59,7 +59,8 @@ export class CommunicationService {
       }
 
       if (event instanceof NavigationCancel) {
-        //
+        this.messageErrorUnexpected();
+        this.loading.next(false);
       }
     });
   }
