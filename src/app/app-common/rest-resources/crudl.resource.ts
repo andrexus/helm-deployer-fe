@@ -90,7 +90,7 @@ export abstract class CRUDLResource<OBJECT extends BaseDTO, LIST_REQUEST, LIST_O
     }
   }
 
-  private singleUrl(id: string) {
+  singleUrl(id: string) {
     return this.baseUrl + '/' + id;
   }
 

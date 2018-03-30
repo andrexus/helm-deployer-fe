@@ -22,72 +22,71 @@
 
       <mat-radio-group formControlName="webhookType" fxLayout="row" fxLayoutGap="15px">
         <mat-radio-button value="pipeline">Pipeline</mat-radio-button>
-        <mat-radio-button value="manual" [disabled]="true">Manually</mat-radio-button>
+        <mat-radio-button value="manually">Manually</mat-radio-button>
       </mat-radio-group>
     </div>
 
-    <mat-divider [inset]="true"></mat-divider>
+    <ng-container *ngIf="form.get('condition.webhookType').value === 'pipeline'">
+      <mat-divider [inset]="true"></mat-divider>
 
-    <div [formGroup]="form.get('condition')">
-      <mat-card-subtitle>Git repository / pipeline properties</mat-card-subtitle>
+      <div [formGroup]="form.get('condition')" *ngIf="form.get('condition.webhookType').value === 'pipeline'">
+        <mat-card-subtitle>Git repository / pipeline properties</mat-card-subtitle>
 
-      <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
-        <mat-form-field>
-          <input matInput [matAutocomplete]="projectsAC" placeholder="Project" formControlName="projectNamespace" required>
-          <mat-error *ngIf="form.get('condition.projectNamespace').hasError('required')">required</mat-error>
-          <mat-hint>Repository namespace</mat-hint>
+        <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+          <mat-form-field>
+            <input matInput [matAutocomplete]="projectsAC" placeholder="Repository namespace" formControlName="projectNamespace" required>
+            <mat-error *ngIf="form.get('condition.projectNamespace').hasError('required')">required</mat-error>
 
-          <mat-autocomplete autoActiveFirstOption #projectsAC>
-            <mat-option *ngFor="let project of gitProjects | async" [value]="project">{{ project }}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+            <mat-autocomplete autoActiveFirstOption #projectsAC>
+              <mat-option *ngFor="let project of gitProjects | async" [value]="project">{{ project }}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
 
-        <mat-form-field>
-          <input matInput [matAutocomplete]="repositoriesAC" placeholder="Repository" formControlName="projectName" required>
-          <mat-error *ngIf="form.get('condition.projectName').hasError('required')">required</mat-error>
-          <mat-hint>Repository name</mat-hint>
+          <mat-form-field>
+            <input matInput [matAutocomplete]="repositoriesAC" placeholder="Repository name" formControlName="projectName" required>
+            <mat-error *ngIf="form.get('condition.projectName').hasError('required')">required</mat-error>
 
-          <mat-autocomplete autoActiveFirstOption #repositoriesAC>
-            <mat-option *ngFor="let repo of gitRepositories | async" [value]="repo">{{ repo }}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+            <mat-autocomplete autoActiveFirstOption #repositoriesAC>
+              <mat-option *ngFor="let repo of gitRepositories | async" [value]="repo">{{ repo }}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
 
-        <mat-form-field>
-          <input matInput [matAutocomplete]="branchesAC" placeholder="Branch" formControlName="gitRef" required>
-          <mat-error *ngIf="form.get('condition.gitRef').hasError('required')">required</mat-error>
-          <mat-hint>Repository branch</mat-hint>
+          <mat-form-field>
+            <input matInput [matAutocomplete]="branchesAC" placeholder="Repository branch" formControlName="gitRef" required>
+            <mat-error *ngIf="form.get('condition.gitRef').hasError('required')">required</mat-error>
 
-          <mat-autocomplete autoActiveFirstOption #branchesAC>
-            <mat-option *ngFor="let branch of gitBranches" [value]="branch">{{ branch }}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+            <mat-autocomplete autoActiveFirstOption #branchesAC>
+              <mat-option *ngFor="let branch of gitBranches" [value]="branch">{{ branch }}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
 
-        <mat-checkbox formControlName="isTag">on tagged commit only</mat-checkbox>
+          <mat-checkbox formControlName="isTag">on tagged commit only</mat-checkbox>
+        </div>
       </div>
-    </div>
+    </ng-container>
 
-    <mat-divider [inset]="true"></mat-divider>
+    <mat-divider [inset]="true" ></mat-divider>
 
     <div [formGroup]="form.get('deployConfig')">
       <mat-card-subtitle>Deployment config</mat-card-subtitle>
 
       <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
         <mat-form-field>
-          <mat-select placeholder="Release" formControlName="releaseName">
+          <mat-select placeholder="Release" required formControlName="releaseName">
             <mat-option *ngFor="let release of releases" [value]="release">{{ release }}</mat-option>
           </mat-select>
           <mat-error *ngIf="form.get('deployConfig.releaseName').hasError('required')">required</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-select placeholder="Chart name" formControlName="chartName">
+          <mat-select placeholder="Chart name" required formControlName="chartName">
             <mat-option *ngFor="let name of chartNames" [value]="name">{{ name }}</mat-option>
           </mat-select>
           <mat-error *ngIf="form.get('deployConfig.chartName').hasError('required')">required</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-select placeholder="Version" formControlName="chartVersion">
+          <mat-select placeholder="Version" required formControlName="chartVersion">
             <mat-option *ngFor="let version of chartVersions" [value]="version">{{ version }}</mat-option>
           </mat-select>
           <mat-error *ngIf="form.get('deployConfig.chartVersion').hasError('required')">required</mat-error>
@@ -95,6 +94,7 @@
 
         <mat-form-field>
           <mat-select placeholder="Chart value" formControlName="chartValuesId">
+            <mat-option value=""><span class="mat-caption">default</span></mat-option>
             <mat-option *ngFor="let chartValue of chartValues" [value]="chartValue.id">{{ chartValue.name }}</mat-option>
           </mat-select>
         </mat-form-field>

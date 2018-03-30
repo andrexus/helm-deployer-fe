@@ -14,7 +14,9 @@
   <mat-table matSort [dataSource]="dataSource">
     <ng-container matColumnDef="chartName">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Chart</mat-header-cell>
-      <mat-cell *matCellDef="let chartValue">{{chartValue.chartName}}</mat-cell>
+      <mat-cell *matCellDef="let chartValue">
+        <a [routerLink]="'./' + chartValue.id">{{chartValue.chartName}}</a>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Values set name</mat-header-cell>

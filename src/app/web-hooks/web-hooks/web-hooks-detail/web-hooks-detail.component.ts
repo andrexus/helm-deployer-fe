@@ -142,11 +142,11 @@ export class WebHooksDetailComponent implements OnInit, OnDestroy {
       name: new FormControl(dto.name || '', Validators.required),
       description: new FormControl(dto.description || ''),
       condition: new FormGroup({
-        webhookType: new FormControl('pipeline'),
+        webhookType: new FormControl(dto.condition.webhookType || 'pipeline'),
         projectNamespace: this.gitProjectControl = new FormControl(dto.condition.projectNamespace || '', Validators.required),
         projectName: this.gitRepositoryControl = new FormControl(dto.condition.projectName || '', Validators.required),
         gitRef: new FormControl(dto.condition.gitRef || '', Validators.required),
-        isTag: new FormControl(dto.condition.isTag || true),
+        isTag: new FormControl(dto.condition.isTag),
       }),
       deployConfig: new FormGroup({
         releaseName: this.releaseControl = new FormControl(dto.deployConfig.releaseName || '', Validators.required),

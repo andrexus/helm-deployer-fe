@@ -40,6 +40,7 @@ export class ReleasesListComponent implements OnInit, AfterViewInit {
   get columnsToDisplay() {
     const always = [
       'name',
+      'namespace',
       'version',
       'deployed',
     ];

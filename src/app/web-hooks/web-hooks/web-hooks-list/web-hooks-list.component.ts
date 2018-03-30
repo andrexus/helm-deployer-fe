@@ -21,6 +21,7 @@ export class WebHooksListComponent implements OnInit, AfterViewInit {
     'name',
     'description',
     'updatedAt',
+    'deployButton',
     'editButtons',
     'deleteButtons',
   ];
@@ -46,6 +47,28 @@ export class WebHooksListComponent implements OnInit, AfterViewInit {
 
   filter(value: string) {
     this.dataSource.filter = value.trim().toLowerCase();
+  }
+
+  deploy(id: string) {
+    this
+      .dialog
+      .open(ConfirmationDialogComponent, {
+        data: <ConfirmationDialogData>{
+          title: 'Deploy chart',
+          content: 'Are you sure you want to proceed?',
+        },
+      })
+      .afterClosed()
+      .pipe(
+        filter(ok => ok),
+        tap(() => this.communicator.isLoading = true),
+        switchMap(() => this.resource.deploy(id)),
+        finalize(() => this.communicator.isLoading = false),
+      )
+      .subscribe(
+        () => this.communicator.messageSuccess('Deployed successfully'),
+        error => this.communicator.messageErrorUnexpected(error),
+      );
   }
 
   remove(id: string) {
